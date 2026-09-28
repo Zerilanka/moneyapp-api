@@ -1,8 +1,19 @@
-import { registerRootComponent } from 'expo';
+import express from 'express';
+import pkg from 'pg';
+const { Pool } = pkg;
 
-import App from './App';
+const app = express();
+app.use(express.json());
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+app.get('/', (req, res) => {
+  res.send('Backend de MoneyApp funcionando correctamente con Neon!');
+});
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
